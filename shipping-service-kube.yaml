@@ -29,4 +29,5 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
-
+      imagePullSecrets:
+        - name: aws-ecr-secret
