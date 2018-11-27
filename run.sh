@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar /work/app.jar
+./gradlew build && java -jar build/libs/shipping-service-0.1.0.jar

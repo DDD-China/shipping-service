@@ -1,10 +1,9 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-export BUILD_NUMBER=0.0.0
+export CIRCLE_BUILD_NUM_DOCKER=0.1.1
+export AWS_ECR_REGISTRY=955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn
 
-docker build -t 955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn/shipping-service:$BUILD_NUMBER .
-docker tag 955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn/shipping-service:$BUILD_NUMBER 955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn/shipping-service:latest
-
-docker push 955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn/shipping-service:$BUILD_NUMBER
-docker push 955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn/shipping-service:latest
-
+./gradlew docker
+docker tag $AWS_ECR_REGISTRY/shipping-service:latest $AWS_ECR_REGISTRY/shipping-service:$CIRCLE_BUILD_NUM_DOCKER
+docker push $AWS_ECR_REGISTRY/shipping-service:$CIRCLE_BUILD_NUM_DOCKER
+docker push $AWS_ECR_REGISTRY/shipping-service:latest

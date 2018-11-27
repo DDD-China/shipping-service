@@ -1,35 +1,60 @@
 buildscript {
 	ext {
-		springBootVersion = '1.5.17.RELEASE'
+		springBootVersion = '2.0.5.RELEASE'
 	}
 	repositories {
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
 		mavenCentral()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
+		classpath('io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE')
 	}
 }
 
 apply plugin: 'java'
+apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.palantir.docker'
 
-group = 'com.dmall'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+group = '955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn'
+
+bootJar {
+	baseName = 'shipping-service'
+	version = '0.1.0'
+}
+
+task unpack(type: Copy) {
+	dependsOn bootJar
+	from(zipTree(tasks.bootJar.outputs.files.singleFile))
+	into("build/dependency")
+}
+docker {
+	name "${project.group}/${bootJar.baseName}"
+	copySpec.from(tasks.unpack.outputs).into("dependency")
+	buildArgs(['DEPENDENCY': "dependency"])
+}
 
 repositories {
 	mavenCentral()
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 
 ext {
-	springCloudVersion = 'Edgware.SR5'
+	springCloudVersion = 'Finchley.SR2'
 }
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.cloud:spring-cloud-starter-feign')
+	compile('org.springframework.cloud:spring-cloud-starter-openfeign')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
