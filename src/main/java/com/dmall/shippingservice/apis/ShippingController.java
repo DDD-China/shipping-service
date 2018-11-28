@@ -1,44 +1,43 @@
 package com.dmall.shippingservice.apis;
 
+import com.dmall.shippingservice.model.Logistic;
 import com.dmall.shippingservice.model.Shipping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/goods")
+@RequestMapping("/shippings")
 public class ShippingController {
 
-  private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    @GetMapping
+    public List<Shipping> getShippingsByOrderId(@RequestParam(name = "orderId") Long orderId) {
+        return Arrays.asList(Shipping.builder()
+                .orderId(1L)
+                .quantity(10L)
+                .address("北京国际会议中心308")
+                .logistics(Arrays.asList(
+                        Logistic.builder()
+                                .orderId(1L)
+                                .express("方通快递")
+                                .updateAt(1234567L)
+                                .info("已经出库").build()
+                ))
+                .build()
+        );
+    }
 
-  private List<Shipping> shippings = null;
+    @PostMapping
+    public ResponseEntity<Shipping> createShipping(@RequestBody Shipping shipping) {
 
-  public ShippingController() throws ParseException {
-    this.shippings = Arrays.asList(
-        new Shipping("g001", "烟台1号库房", "北京市东城区A123号", formatter.parse("2015-04-23")),
-        new Shipping("g002", "江西1号库", "北京市海淀区西二旗32号", formatter.parse("2015-05-12")),
-        new Shipping("g003", "北京北七家", "北京朝阳大悦城3楼231号", formatter.parse("2015-04-27")));
-  }
+        return ResponseEntity.status(HttpStatus.CREATED).body(shipping);
+    }
 
-  @GetMapping
-  public List<Shipping> getCommentsByTaskId() {
-
-    return shippings;
-  }
-
-  @RequestMapping(value = "/{goodsId}", method = RequestMethod.GET, headers = "Accept=application/json")
-  public Shipping getProductbyId(@PathVariable("goodsId") final String goodsId) {
-    Optional<Shipping> shipping = shippings.stream().filter(c -> Objects.equals(c.getGoodsId(), goodsId)).findAny();
-
-    return shipping.isPresent() ? shipping.get() : null;
-  }
+    @PostMapping("/{id}/logistics")
+    public ResponseEntity<Shipping> createShippingLogistics(@RequestBody Logistic logistic) {
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }

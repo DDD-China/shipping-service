@@ -3,14 +3,12 @@ buildscript {
 		springBootVersion = '2.0.6.RELEASE'
 	}
 	repositories {
-		maven {
-			url "https://plugins.gradle.org/m2/"
-		}
+        maven {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
 		mavenCentral()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
+//		classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
 		classpath('io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE')
 		classpath('org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.0.1.RELEASE')
 	}
@@ -21,7 +19,7 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
-apply plugin: 'com.palantir.docker'
+//apply plugin: 'com.palantir.docker'
 apply plugin: 'spring-cloud-contract'
 
 group = '955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn'
@@ -36,13 +34,14 @@ task unpack(type: Copy) {
 	from(zipTree(tasks.bootJar.outputs.files.singleFile))
 	into("build/dependency")
 }
-docker {
-	name "${project.group}/${bootJar.baseName}"
-	copySpec.from(tasks.unpack.outputs).into("dependency")
-	buildArgs(['DEPENDENCY': "dependency"])
-}
+//docker {
+//	name "${project.group}/${bootJar.baseName}"
+//	copySpec.from(tasks.unpack.outputs).into("dependency")
+//	buildArgs(['DEPENDENCY': "dependency"])
+//}
 
 repositories {
+    maven {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
 	mavenCentral()
 }
 
@@ -57,6 +56,7 @@ ext {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.cloud:spring-cloud-starter-openfeign')
+    compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
