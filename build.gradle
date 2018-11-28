@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.5.RELEASE'
+		springBootVersion = '2.0.6.RELEASE'
 	}
 	repositories {
 		maven {
@@ -12,6 +12,7 @@ buildscript {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
 		classpath('io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE')
+		classpath('org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.0.1.RELEASE')
 	}
 }
 
@@ -21,6 +22,7 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.palantir.docker'
+apply plugin: 'spring-cloud-contract'
 
 group = '955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn'
 
@@ -55,6 +57,7 @@ ext {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.cloud:spring-cloud-starter-openfeign')
+    testCompile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
@@ -62,4 +65,9 @@ dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
+}
+
+contracts {
+	packageWithBaseClasses = 'com.dmall.shippingservice.contractTest'
+	contractsDslDir = project.file("api")
 }
