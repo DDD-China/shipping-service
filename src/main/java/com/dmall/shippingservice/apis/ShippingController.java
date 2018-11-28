@@ -33,7 +33,7 @@ public class ShippingController {
 
     @PostMapping("/{id}/logistics")
     public ResponseEntity<Shipping> createShippingLogistics(
-            @PathParam("id") Long shippingId,
+            @PathVariable("id") Long shippingId,
             @RequestBody Logistic logistic
     ) {
         shippingService.saveLogistic(shippingId, logistic);
