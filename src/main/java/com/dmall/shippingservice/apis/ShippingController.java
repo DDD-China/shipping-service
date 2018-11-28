@@ -2,6 +2,8 @@ package com.dmall.shippingservice.apis;
 
 import com.dmall.shippingservice.model.Logistic;
 import com.dmall.shippingservice.model.Shipping;
+import com.dmall.shippingservice.service.ShippingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,21 +15,13 @@ import java.util.List;
 @RequestMapping("/shippings")
 public class ShippingController {
 
+    @Autowired
+    ShippingService shippingService;
+
     @GetMapping
     public List<Shipping> getShippingsByOrderId(@RequestParam(name = "orderId") Long orderId) {
-        return Arrays.asList(Shipping.builder()
-                .orderId(1L)
-                .quantity(10L)
-                .address("北京国际会议中心308")
-                .logistics(Arrays.asList(
-                        Logistic.builder()
-                                .orderId(1L)
-                                .express("方通快递")
-                                .updateAt(1234567L)
-                                .info("已经出库").build()
-                ))
-                .build()
-        );
+        return shippingService.findByOrderId(orderId);
+
     }
 
     @PostMapping
