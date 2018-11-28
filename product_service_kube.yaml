@@ -25,11 +25,21 @@ spec:
     spec:
       containers:
       - name: shipping-service
-        image: 955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn/shipping-service:0.1.1
+        image: 955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn/shipping-service:0.1.2
         imagePullPolicy: IfNotPresent
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: "prod"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: db_user
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: db_pass
         ports:
         - containerPort: 9080
       imagePullSecrets:

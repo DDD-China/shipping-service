@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CIRCLE_BUILD_NUM_DOCKER=0.1.1
+export CIRCLE_BUILD_NUM_DOCKER=0.1.2
 export AWS_ECR_REGISTRY=955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn
 
 ./gradlew clean build -x test
