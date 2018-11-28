@@ -20,6 +20,7 @@ public class Logistic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long shippingId;
     private Long orderId;
     private String express;
     private String info;

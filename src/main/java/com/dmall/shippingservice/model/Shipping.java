@@ -21,7 +21,7 @@ public class Shipping {
 	private Long quantity;
 	private String address;
     @OneToMany(cascade={ CascadeType.ALL })
-    @JoinColumn(name="shipping_id")
+    @JoinColumn(name="shippingId")
 	private List<Logistic> logistics;
 }
 

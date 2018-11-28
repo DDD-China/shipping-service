@@ -18,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.anyLong;
 
@@ -55,6 +56,7 @@ public class ShippingBase {
                 .build());
 
         when(shippingService.findByOrderId(anyLong())).thenReturn(shippings);
-
+        when(shippingService.save(any(Shipping.class))).thenReturn(10L);
+        when(shippingService.saveLogistic(anyLong(), any(Logistic.class))).thenReturn(100L);
     }
 }
