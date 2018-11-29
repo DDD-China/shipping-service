@@ -16,8 +16,13 @@ import java.util.List;
 @RequestMapping("/shippings")
 public class ShippingController {
 
+
+    private final ShippingService shippingService;
+
     @Autowired
-    ShippingService shippingService;
+    public ShippingController(ShippingService shippingService) {
+        this.shippingService = shippingService;
+    }
 
     @GetMapping
     public List<Shipping> getShippingsByOrderId(@RequestParam(name = "orderId") Long orderId) {
