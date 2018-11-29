@@ -6,6 +6,10 @@ jobs:
     working_directory: ~/shipping-service
     steps:
       - checkout
+      - run:
+          name: Pull Submodules
+          command: |
+            ./update-contract.sh
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "build.gradle" }}
