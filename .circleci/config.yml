@@ -88,7 +88,7 @@ jobs:
           command: |
             export CIRCLE_BUILD_NUM_DOCKER="$(cat /tmp/workspace/docker-build/docker-build_number.txt)"
             sed -i "s/BUILD_VERSION/$CIRCLE_BUILD_NUM_DOCKER/g" shipping-service-kube.yaml
-            ./deploy.sh $CIRCLE_BUILD_NUM_DOCKER
+            ./deploy.sh
 
 workflows:
   version: 2
