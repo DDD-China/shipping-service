@@ -29,5 +29,18 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: db_user
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: db_pass
       imagePullSecrets:
         - name: new-secret
