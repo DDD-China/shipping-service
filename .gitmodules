@@ -1,3 +1,0 @@
-[submodule "api/shipping"]
-	path = api/shipping
-	url = git@gitlab.com:cloud-native-workshop/shipping-service-contract.git
