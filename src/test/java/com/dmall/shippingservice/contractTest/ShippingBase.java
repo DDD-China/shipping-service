@@ -24,8 +24,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.anyLong;
 
-@Ignore
-@AutoConfigureMockMvc
 public class ShippingBase {
 
     @Autowired
