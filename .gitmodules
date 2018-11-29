@@ -1,0 +1,3 @@
+[submodule "api/shipping"]
+	path = api/shipping
+	url = https://github.com/DDD-China/shipping-service-contracts.git
