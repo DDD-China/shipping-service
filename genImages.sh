@@ -1,11 +1,17 @@
 #!/bin/bash
+if [ "$#" -ne 1 ]; then
+    echo "You must enter build version (e.g. 0.1.2) as argument! Usage example: 'genImages.sh 0.1.2'"
+    exit 1
+fi
 
-export CIRCLE_BUILD_NUM_DOCKER=0.1.2
+export REPO_NAME=shipping-service
+export ORG_NAME=com.dmall
 export AWS_ECR_REGISTRY=955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn
 
-./gradlew clean build -x test
-docker build . -t $AWS_ECR_REGISTRY/shipping-service:latest
+./gradlew docker
 
-docker tag $AWS_ECR_REGISTRY/shipping-service:latest $AWS_ECR_REGISTRY/shipping-service:$CIRCLE_BUILD_NUM_DOCKER
-docker push $AWS_ECR_REGISTRY/shipping-service:$CIRCLE_BUILD_NUM_DOCKER
-docker push $AWS_ECR_REGISTRY/shipping-service:latest
+docker tag $ORG_NAME/$REPO_NAME:latest $AWS_ECR_REGISTRY/$REPO_NAME:$1
+docker push $AWS_ECR_REGISTRY/$REPO_NAME:$1
+
+docker tag $ORG_NAME/$REPO_NAME:latest $AWS_ECR_REGISTRY/$REPO_NAME:latest
+docker push $AWS_ECR_REGISTRY/$REPO_NAME:latest

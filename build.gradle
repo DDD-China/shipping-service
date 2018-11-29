@@ -1,17 +1,21 @@
 buildscript {
-	ext {
-		springBootVersion = '2.0.6.RELEASE'
-	}
-	repositories {
-        maven {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-//		classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
-		classpath('io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE')
-		classpath('org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.0.1.RELEASE')
-	}
+    ext {
+        springBootVersion = '2.0.6.RELEASE'
+    }
+    repositories {
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
+        classpath('org.springframework.cloud:spring-cloud-contract-gradle-plugin:2.0.1.RELEASE')
+    }
 }
 
 apply plugin: 'java'
@@ -19,59 +23,53 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
-//apply plugin: 'com.palantir.docker'
+apply plugin: 'com.palantir.docker'
 apply plugin: 'spring-cloud-contract'
 
-group = '955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn'
-
-bootJar {
-	baseName = 'shipping-service'
-	version = '0.1.0'
-}
-
-task unpack(type: Copy) {
-	dependsOn bootJar
-	from(zipTree(tasks.bootJar.outputs.files.singleFile))
-	into("build/dependency")
-}
-
-//docker {
-//	name "${project.group}/${bootJar.baseName}"
-//	copySpec.from(tasks.unpack.outputs).into("dependency")
-//	buildArgs(['DEPENDENCY': "dependency"])
-//}
-
-repositories {
-    maven {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
-	mavenCentral()
-}
-
+group = 'com.dmall'
+version = '0.1.0'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+jar {
+    baseName = 'shipping-service'
+    version = "${version}"
+}
+
+docker {
+    name "${project.group}/${jar.baseName}"
+    files jar.archivePath
+    buildArgs(['JAR_FILE': "${jar.archiveName}"])
+}
+
+repositories {
+    mavenCentral()
+}
+
+
 
 ext {
-	springCloudVersion = 'Finchley.SR2'
+    springCloudVersion = 'Finchley.SR2'
 }
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.cloud:spring-cloud-starter-openfeign')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.cloud:spring-cloud-starter-openfeign')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('mysql:mysql-connector-java')
     compile('org.flywaydb:flyway-core')
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 contracts {
-	packageWithBaseClasses = 'com.dmall.shippingservice.contractTest'
-	contractsDslDir = project.file("api")
+    packageWithBaseClasses = 'com.dmall.shippingservice.contractTest'
+    contractsDslDir = project.file("api")
 }

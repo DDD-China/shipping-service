@@ -25,8 +25,7 @@ jobs:
           command: |
             CIRCLE_BUILD_NUM_DOCKER=0.1.$CIRCLE_BUILD_NUM
             mkdir -p /tmp/workspace/docker-build
-            cd /tmp/workspace/docker-build
-            echo ${CIRCLE_BUILD_NUM_DOCKER} > docker-build_number.txt
+            echo ${CIRCLE_BUILD_NUM_DOCKER} > /tmp/workspace/docker-build/docker-build_number.txt
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
@@ -48,36 +47,30 @@ jobs:
           name: Install aws cli
           command: |
             sudo pip install awscli
-            aws --version
-      - run:
-          name: Install aws-iam-authenticator
-          command: |
-            curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator
-            sudo mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
-            sudo chmod +x /usr/local/bin/aws-iam-authenticator
-            /usr/local/bin/aws-iam-authenticator --help
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies-
-      - run: ./gradlew docker
+      - run: ./gradlew build docker
       - save_cache:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
-      # build and push Docker image
       - attach_workspace: &attach_workspace
           at: /tmp/workspace
       - run:
-          name: Build and push docker image
+          name: Tag and push docker image
           command: |
             export CIRCLE_BUILD_NUM_DOCKER="$(cat /tmp/workspace/docker-build/docker-build_number.txt)"
             echo ${CIRCLE_BUILD_NUM_DOCKER}
             $(aws ecr get-login --no-include-email)
+            export REPO_NAME=shipping-service
+            export ORG_NAME=com.dmall
             export AWS_ECR_REGISTRY=955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn
-            docker tag $AWS_ECR_REGISTRY/shipping-service:latest $AWS_ECR_REGISTRY/shipping-service:$CIRCLE_BUILD_NUM_DOCKER
-            docker push $AWS_ECR_REGISTRY/shipping-service:$CIRCLE_BUILD_NUM_DOCKER
-            docker push $AWS_ECR_REGISTRY/shipping-service:latest
+            docker tag $ORG_NAME/$REPO_NAME:latest $AWS_ECR_REGISTRY/$REPO_NAME:$CIRCLE_BUILD_NUM_DOCKER
+            # docker push $AWS_ECR_REGISTRY/$REPO_NAME:$CIRCLE_BUILD_NUM_DOCKER
+            docker tag $ORG_NAME/$REPO_NAME:latest $AWS_ECR_REGISTRY/$REPO_NAME:latest
+            # docker push $AWS_ECR_REGISTRY/$REPO_NAME:latest
 
   deploy-aws:
     docker:
@@ -85,30 +78,9 @@ jobs:
     working_directory: ~/shipping-service
     steps:
       - checkout
-      - run:
-          name: Install aws cli
-          command: |
-            sudo pip install awscli
-            aws --version
-      - run:
-          name: Install aws-iam-authenticator
-          command: |
-            curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator
-            sudo mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
-            sudo chmod +x /usr/local/bin/aws-iam-authenticator
-            /usr/local/bin/aws-iam-authenticator --help
-      - run:
-          name: Install kubectl
-          command: |
-            wget -O kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-            sudo mv ./kubectl /usr/local/bin/kubectl
-            sudo chmod +x /usr/local/bin/kubectl
-      - run:
-          name: Install eksctl
-          command: |
-            curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-            sudo mv /tmp/eksctl /usr/local/bin
-            sudo chmod +x /usr/local/bin/eksctl
+      - add_ssh_keys:
+          fingerprints:
+            - "e1:6d:4e:b1:06:70:15:77:e7:c6:c0:0d:1e:18:3d:88"
       - attach_workspace: &attach_workspace
           at: /tmp/workspace
       - run:
@@ -116,6 +88,7 @@ jobs:
           command: |
             export CIRCLE_BUILD_NUM_DOCKER="$(cat /tmp/workspace/docker-build/docker-build_number.txt)"
             sed -i "s/BUILD_VERSION/$CIRCLE_BUILD_NUM_DOCKER/g" shipping-service-kube.yaml
+            ./deploy.sh $CIRCLE_BUILD_NUM_DOCKER
 
 workflows:
   version: 2
