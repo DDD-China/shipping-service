@@ -26,9 +26,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 
 public class ShippingBase {
 
-    @Autowired
-    WebApplicationContext wac;
-
     @Before
     public void setup() {
         final ShippingService shippingService = mock(ShippingService.class);
