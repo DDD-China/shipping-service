@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: shipping-service
-        image: 955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn/shipping-service:BUILD_VERSION
+        image: 955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn/shipping-service:0.2.2
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080

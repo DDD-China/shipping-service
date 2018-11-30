@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,24 +25,23 @@ public class ShippingBase {
         final LogisticService logisticService = mock(LogisticService.class);
 
         List<Shipping> shippings = Arrays.asList(Shipping.builder()
-                .orderId(1L)
+                .orderId("1")
                 .quantity(10L)
                 .address("北京国际会议中心308")
                 .logistics(Arrays.asList(
                         Logistic.builder()
                                 .orderId(1L)
                                 .express("方通快递")
-                                .updateAt(1234567L)
                                 .info("已经出库").build()
                 ))
                 .build());
 
-        when(shippingService.getShippingByOrderId(anyLong())).thenReturn(shippings);
+        when(shippingService.getShippingByOrderId(anyString())).thenReturn(shippings);
         when(shippingService.save(any(Shipping.class))).thenReturn(buildShipping());
         RestAssuredMockMvc.standaloneSetup(new ShippingController(shippingService,logisticService));
     }
 
     private Shipping buildShipping() {
-        return Shipping.builder().orderId(11L).quantity(10L).address("北京国际会议中心").build();
+        return Shipping.builder().orderId("11").quantity(10L).address("北京国际会议中心").build();
     }
 }

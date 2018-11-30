@@ -17,7 +17,7 @@ public class ShippingService {
     @Autowired
     private LogisticRepository logisticRepository;
 
-    public List<Shipping> getShippingByOrderId(long orderId){
+    public List<Shipping> getShippingByOrderId(String orderId){
         return shippingRepository.getShippingByOrderId(orderId);
     }
 

@@ -27,7 +27,7 @@ public class ShippingController {
     }
 
     @GetMapping()
-    public List<Shipping> getShippingByOrderId(@RequestParam("orderId") Long orderId) {
+    public List<Shipping> getShippingByOrderId(@RequestParam("orderId") String orderId) {
         return shippingService.getShippingByOrderId(orderId);
     }
 

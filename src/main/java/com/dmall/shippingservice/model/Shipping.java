@@ -17,7 +17,7 @@ public class Shipping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	private Long orderId;
+	private String orderId;
 	private Long quantity;
 	private String address;
     @OneToMany(cascade={ CascadeType.ALL })

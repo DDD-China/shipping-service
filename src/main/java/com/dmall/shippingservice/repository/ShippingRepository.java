@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ShippingRepository extends JpaRepository<Shipping, Long> {
-    List<Shipping> getShippingByOrderId(long orderId);
+    List<Shipping> getShippingByOrderId(String orderId);
 }
