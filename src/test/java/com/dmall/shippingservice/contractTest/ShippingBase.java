@@ -3,6 +3,7 @@ package com.dmall.shippingservice.contractTest;
 import com.dmall.shippingservice.apis.ShippingController;
 import com.dmall.shippingservice.model.Logistic;
 import com.dmall.shippingservice.model.Shipping;
+import com.dmall.shippingservice.service.LogisticService;
 import com.dmall.shippingservice.service.ShippingService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.Before;
@@ -10,13 +11,17 @@ import org.junit.Before;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ShippingBase {
 
     @Before
     public void setup() {
         final ShippingService shippingService = mock(ShippingService.class);
+        final LogisticService logisticService = mock(LogisticService.class);
 
         List<Shipping> shippings = Arrays.asList(Shipping.builder()
                 .orderId(1L)
@@ -31,7 +36,12 @@ public class ShippingBase {
                 ))
                 .build());
 
-//        when(shippingService.findByOrderId(anyLong())).thenReturn(shippings);
-        RestAssuredMockMvc.standaloneSetup(new ShippingController(shippingService));
+        when(shippingService.getShippingByOrderId(anyLong())).thenReturn(shippings);
+        when(shippingService.save(any(Shipping.class))).thenReturn(buildShipping());
+        RestAssuredMockMvc.standaloneSetup(new ShippingController(shippingService,logisticService));
+    }
+
+    private Shipping buildShipping() {
+        return Shipping.builder().orderId(11L).quantity(10L).address("北京国际会议中心").build();
     }
 }

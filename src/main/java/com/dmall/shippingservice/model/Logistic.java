@@ -15,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class Logistic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,5 +24,5 @@ public class Logistic {
     private Long orderId;
     private String express;
     private String info;
-    private Long updateAt;
+    private Date updateAt;
 }
