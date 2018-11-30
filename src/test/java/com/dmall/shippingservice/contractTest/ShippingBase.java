@@ -1,28 +1,16 @@
 package com.dmall.shippingservice.contractTest;
 
-import com.dmall.shippingservice.ShippingServiceApplication;
 import com.dmall.shippingservice.apis.ShippingController;
 import com.dmall.shippingservice.model.Logistic;
 import com.dmall.shippingservice.model.Shipping;
 import com.dmall.shippingservice.service.ShippingService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.anyLong;
 
 public class ShippingBase {
 
@@ -43,9 +31,7 @@ public class ShippingBase {
                 ))
                 .build());
 
-        when(shippingService.findByOrderId(anyLong())).thenReturn(shippings);
-        when(shippingService.save(any(Shipping.class))).thenReturn(10L);
-        when(shippingService.saveLogistic(anyLong(), any(Logistic.class))).thenReturn(100L);
+//        when(shippingService.findByOrderId(anyLong())).thenReturn(shippings);
         RestAssuredMockMvc.standaloneSetup(new ShippingController(shippingService));
     }
 }

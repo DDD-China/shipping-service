@@ -15,7 +15,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
 public class Logistic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
