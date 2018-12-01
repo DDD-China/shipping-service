@@ -30,9 +30,6 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.palantir.docker'
 apply plugin: 'spring-cloud-contract'
 
-
-
-
 group = 'com.dmall'
 version = '0.1.0'
 sourceCompatibility = 1.8
