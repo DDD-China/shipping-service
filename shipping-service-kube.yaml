@@ -16,7 +16,7 @@ kind: Deployment
 metadata:
   name: shipping-service-v1
 spec:
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: shipping-service
-        image: 955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn/shipping-service:0.2.3
+        image: 955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn/shipping-service:0.2.4
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9080

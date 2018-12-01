@@ -28,9 +28,7 @@ public class ShippingController {
 
     @GetMapping()
     public List<Shipping> getShippingByOrderId1(@RequestParam("orderId") String orderId) {
-        System.out.println("ShippingController.getShippingByOrderId1");
-        System.out.println("orderId = [" + orderId + "]");
-        return shippingService.findById(1L);
+        return shippingService.findById(orderId);
     }
 
     @PostMapping()
@@ -46,6 +44,4 @@ public class ShippingController {
         logistic.setShippingId(shippingId);
         logisticService.createLogistic(logistic);
     }
-
-
 }

@@ -30,7 +30,7 @@ public class ShippingService {
         return Arrays.asList(Shipping.builder().orderId(orderId).build());
     }
 
-    public List<Shipping> findById(long l) {
-        return null;
+    public List<Shipping> findById(String orderId) {
+        return shippingRepository.getShippingByOrderId(orderId);
     }
 }
