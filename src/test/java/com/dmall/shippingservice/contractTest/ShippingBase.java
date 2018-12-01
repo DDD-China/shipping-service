@@ -13,7 +13,6 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -36,8 +35,9 @@ public class ShippingBase {
                 ))
                 .build());
 
-        when(shippingService.getShippingByOrderId(anyString())).thenReturn(shippings);
+        when(shippingService.findById(anyLong())).thenReturn(shippings);
         when(shippingService.save(any(Shipping.class))).thenReturn(buildShipping());
+
         RestAssuredMockMvc.standaloneSetup(new ShippingController(shippingService,logisticService));
     }
 

@@ -18,3 +18,5 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
   jpa:
     show-sql: true
+  flyway:
+    enabled: false

@@ -16,7 +16,7 @@ kind: Deployment
 metadata:
   name: shipping-service-v1
 spec:
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:

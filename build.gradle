@@ -18,6 +18,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.gorylenko.gradle-git-properties" version "1.5.1"
+}
+
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
@@ -25,6 +29,9 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.palantir.docker'
 apply plugin: 'spring-cloud-contract'
+
+
+
 
 group = 'com.dmall'
 version = '0.1.0'
@@ -54,8 +61,9 @@ ext {
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.cloud:spring-cloud-starter-openfeign')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('org.springframework.cloud:spring-cloud-starter-openfeign')
     compile('mysql:mysql-connector-java')
     compile('org.flywaydb:flyway-core')
     compile('io.springfox:springfox-swagger2:2.9.2')
@@ -63,6 +71,7 @@ dependencies {
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.cloud:spring-cloud-starter-contract-verifier')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile 'com.tngtech.archunit:archunit:0.9.3'
 }
 
 dependencyManagement {

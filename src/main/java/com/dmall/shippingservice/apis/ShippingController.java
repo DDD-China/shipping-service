@@ -27,8 +27,10 @@ public class ShippingController {
     }
 
     @GetMapping()
-    public List<Shipping> getShippingByOrderId(@RequestParam("orderId") String orderId) {
-        return shippingService.getShippingByOrderId(orderId);
+    public List<Shipping> getShippingByOrderId1(@RequestParam("orderId") String orderId) {
+        System.out.println("ShippingController.getShippingByOrderId1");
+        System.out.println("orderId = [" + orderId + "]");
+        return shippingService.findById(1L);
     }
 
     @PostMapping()
