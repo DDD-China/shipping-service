@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-echo "Deploy"
+sudo kubectl --insecure-skip-tls-verify --kubeconfig $KUBE_CONFIG_FILE get node

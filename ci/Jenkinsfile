@@ -13,11 +13,14 @@ node{
         sh './gradlew build'
     }
 
-    stage('Gen Image') {
+    stage('GenImage') {
         sh './ci/genImage.sh'
     }
 
     stage('Deploy') {
-        sh './ci/deploy.sh'
+        withCredentials([[$class: 'FileBinding', credentialsId: 'kube_config', variable: 'KUBECTL_CONFIG_FILE']]) {
+            sh './ci/deploy.sh'
+        }
+
     }
 }
