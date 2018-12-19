@@ -4,24 +4,20 @@ node{
     stage('Checkout') {
         git url: 'https://github.com/DDD-China/shipping-service.git', branch: 'master'
     }
+
     stage('Test') {
-        steps {
-            sh './gradlew test'
-        }
+        sh './gradlew test'
     }
+
     stage('Build') {
-        steps {
-            sh './gradlew build'
-        }
+        sh './gradlew build'
     }
+
     stage('Gen Image') {
-        steps {
-            sh './ci/genImage.sh'
-        }
+        sh './ci/genImage.sh'
     }
+
     stage('Deploy') {
-        steps {
-            sh './ci/deploy.sh'
-        }
+        sh './ci/deploy.sh'
     }
 }
