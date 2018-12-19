@@ -13,13 +13,21 @@ node{
         sh './gradlew build'
     }
 
-    stage('GenImage') {
-        sh './ci/genImage.sh'
-    }
+    withEnv(['DISABLE_AUTH=true',
+             'DB_ENGINE=sqlite']) {
+             
+        stage('GenImage') {
+            sh './ci/genImage.sh'
+        }
 
-    stage('Deploy') {
-        withCredentials([file(credentialsId: 'kube-config', variable: 'KUBE_CONFIG_FILE')]) {
-            sh './ci/deploy.sh'
+        stage('Deploy') {
+            withCredentials([file(credentialsId: 'kube-config', variable: 'KUBE_CONFIG_FILE')]) {
+                sh './ci/deploy.sh'
+            }
         }
     }
+
+
+
+
 }
