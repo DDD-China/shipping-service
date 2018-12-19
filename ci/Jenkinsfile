@@ -9,7 +9,17 @@ pipeline {
         }
         stage('Build') {
             steps {
+                sh './gradlew build'
+            }
+        }
+        stage('Gen Image') {
+            steps {
                 sh './ci/genImage.sh'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh './ci/deploy.sh'
             }
         }
     }
