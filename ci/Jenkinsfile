@@ -1,31 +1,27 @@
-pipeline {
-    agent any
+node{
+    step([$class: 'WsCleanup'])
 
-    stages {
-        stage([$class: 'WsCleanup'])
-
-        stage('Checkout') {
-            git url: 'https://github.com/DDD-China/shipping-service.git', branch: 'master'
+    stage('Checkout') {
+        git url: 'https://github.com/DDD-China/shipping-service.git', branch: 'master'
+    }
+    stage('Test') {
+        steps {
+            sh './gradlew test'
         }
-        stage('Test') {
-            steps {
-                sh './gradlew test'
-            }
+    }
+    stage('Build') {
+        steps {
+            sh './gradlew build'
         }
-        stage('Build') {
-            steps {
-                sh './gradlew build'
-            }
+    }
+    stage('Gen Image') {
+        steps {
+            sh './ci/genImage.sh'
         }
-        stage('Gen Image') {
-            steps {
-                sh './ci/genImage.sh'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                sh './ci/deploy.sh'
-            }
+    }
+    stage('Deploy') {
+        steps {
+            sh './ci/deploy.sh'
         }
     }
 }
