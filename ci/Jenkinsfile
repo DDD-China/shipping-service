@@ -18,9 +18,8 @@ node{
     }
 
     stage('Deploy') {
-        withCredentials([[$class: 'FileBinding', credentialsId: 'kube_config', variable: 'KUBECTL_CONFIG_FILE']]) {
+        withCredentials([file(credentialsId: 'kube_config', variable: 'KUBE_CONFIG_FILE')]) {
             sh './ci/deploy.sh'
         }
-
     }
 }
