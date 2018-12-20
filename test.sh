@@ -1,4 +1,4 @@
 #!/bin/bash
 
-git submodule update
+./update-contract.sh
 ./gradlew clean test
