@@ -13,8 +13,8 @@ node{
         sh './gradlew build'
     }
 
-    withEnv(['DISABLE_AUTH=true',
-             'DB_ENGINE=sqlite']) {
+    withEnv(['IMAGE_REGISTRY=955065381857.dkr.ecr.cn-north-1.amazonaws.com.cn',
+             'IMAGE_REPO=shipping-service']) {
 
         stage('GenImage') {
             sh './ci/genImage.sh'
