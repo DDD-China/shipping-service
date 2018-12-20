@@ -12,7 +12,7 @@ spring:
 spring:
   profiles: prod
   datasource:
-    url: jdbc:mysql://dmall-shipping-db.cti1pnc10c3g.rds.cn-north-1.amazonaws.com.cn/shippings?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://mydb.cti1pnc10c3g.rds.cn-north-1.amazonaws.com.cn/shippings?useUnicode=true&characterEncoding=utf-8
     username: ${DB_USER}
     password: ${DB_PASS}
     driver-class-name: com.mysql.jdbc.Driver

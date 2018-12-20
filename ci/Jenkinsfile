@@ -15,7 +15,7 @@ node{
 
     withEnv(['DISABLE_AUTH=true',
              'DB_ENGINE=sqlite']) {
-             
+
         stage('GenImage') {
             sh './ci/genImage.sh'
         }
