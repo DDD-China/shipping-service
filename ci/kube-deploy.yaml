@@ -14,14 +14,14 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: shipping-service-v1
+  name: shipping-service-v2
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: shipping-service
-        version: v1
+        version: v2
     spec:
       containers:
       - name: shipping-service

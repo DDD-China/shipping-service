@@ -48,6 +48,6 @@ public class ShippingController {
 
     @GetMapping("/info")
     public String info() {
-        return "V1";
+        return "V2";
     }
 }
