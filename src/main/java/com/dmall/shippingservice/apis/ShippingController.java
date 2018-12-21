@@ -7,6 +7,7 @@ import com.dmall.shippingservice.service.ShippingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -43,5 +44,10 @@ public class ShippingController {
     public void createLogistic(@RequestBody Logistic logistic,@PathVariable("id") long shippingId) {
         logistic.setShippingId(shippingId);
         logisticService.createLogistic(logistic);
+    }
+
+    @GetMapping("/info")
+    public String info() {
+        return "V1";
     }
 }

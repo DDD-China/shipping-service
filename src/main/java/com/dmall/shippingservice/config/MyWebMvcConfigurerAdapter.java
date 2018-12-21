@@ -9,6 +9,6 @@ public class MyWebMvcConfigurerAdapter implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/shippings/actuator", "/actuator");
+//        registry.addRedirectViewController("/shippings/actuator/info", "/actuator/info");
     }
 }
